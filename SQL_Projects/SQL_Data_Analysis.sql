@@ -97,10 +97,48 @@ the guest user's ID is always 0. Include in your output the name of the
 facility, the name of the member formatted as a single column, and the cost.
 Order by descending cost, and do not use any subqueries. */
 
+SELECT DISTINCT Facilities.name,
+	CONCAT(Members.firstname, ' ', Members.surname) AS full_name,
+	CASE WHEN Members.memid = 0 AND Facilities.guestcost * Bookings.slots > 30
+		THEN Facilities.guestcost * Bookings.slots
+	WHEN Members.memid != 0 AND Facilities.membercost * Bookings.slots > 30
+		THEN Facilities.membercost * Bookings.slots END AS COST
+	FROM Facilities, Bookings, Members
+	WHERE  Bookings.facid = Facilities.facid
+	AND Bookings.memid = Members.memid
+	AND LEFT(Bookings.starttime, 10) = '2012-09-14'
+	AND ((Members.memid = 0 AND Facilities.guestcost * Bookings.slots > 30)
+         OR (Members.memid != 0 AND Facilities.membercost * Bookings.slots > 30))
+	ORDER BY COST DESC;
 
 /* Q9: This time, produce the same result as in Q8, but using a subquery. */
 
+SELECT DISTINCT Facilities.name,
+	sub.full_name,
+	CASE WHEN sub.memid = 0 AND Facilities.guestcost * sub.slots > 30
+	THEN Facilities.guestcost * sub.slots
+	WHEN sub.memid != 0 AND Facilities.membercost * sub.slots > 30
+	THEN Facilities. membercost * sub.slots END AS COST
+	FROM Facilities INNER JOIN (
+        SELECT CONCAT(Members.firstname, ' ', Members.surname) AS full_name,
+        	Bookings.*
+        	FROM Members
+        	INNER JOIN Bookings ON Members.memid = Bookings.memid
+        	AND LEFT(Bookings.starttime, 10) = '2012-09-14') sub
+		ON Facilities.facid = sub.facid
+	AND ((sub.memid = 0 AND Facilities.guestcost * sub.slots > 30)
+         OR (sub.memid != 0 AND Facilities.membercost * sub.slots > 30))
+	ORDER BY COST DESC
 
 /* Q10: Produce a list of facilities with a total revenue less than 1000.
 The output of facility name and total revenue, sorted by revenue. Remember
 that there's a different cost for guests and members! */
+
+SELECT Facilities.name,
+	SUM(CASE WHEN Bookings.memid = 0 THEN Bookings.slots * Facilities.guestcost
+        WHEN Bookings.memid != 0 THEN Facilities.membercost * Bookings.slots END) AS Revenue
+	FROM Facilities
+	INNER JOIN Bookings ON Facilities.facid = Bookings.facid
+	GROUP BY Facilities.name
+	HAVING Revenue < 1000
+	ORDER BY Revenue DESC;
