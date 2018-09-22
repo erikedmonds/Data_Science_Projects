@@ -8,6 +8,7 @@ export class Node extends d3.SimulationNodeDatum {
   fy?: number | null;
 
   id: string;
+  
   contructor(id) {
     this.id = id;
   }
