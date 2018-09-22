@@ -17,6 +17,9 @@ export class D3Service {
 	/**The interactactable graph we will simulate in the article
 	* This method does not interact with the DOM purely physical calculations with d3
 	*/
-	getForceDirectedGraph() {}
+	getForceDirectedGraph(nodes: Node[], links: Link[], options: { width, height }) {
+		let graph = new ForceDirectedGraph(nodes, links, options);
+		return graph;
+	}
 
 }
