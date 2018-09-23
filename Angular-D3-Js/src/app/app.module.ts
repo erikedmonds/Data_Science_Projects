@@ -22,7 +22,7 @@ import { SHARED_VISUALS } from './visuals/shared';
     FormsModule,
     HttpModule
   ],
-  providers: [D3D3Service],
+  providers: [D3Service],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
