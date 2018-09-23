@@ -9,4 +9,4 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 ## Running the visualization
 This visualization project uses Angular, and D3.js. 
 To view the project locally, run ng serve --open in the terminal, and navigate to localhost:4200 in any browser (Chrome preferred).
-To see what it should look like, you can see it <a href="erikedmonds.github.io/Angular/index.html">here.</a>
+To see what it should look like, you can see it <a href="https://erikedmonds.github.io/Angular/index.html">here.</a>
