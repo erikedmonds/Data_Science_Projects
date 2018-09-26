@@ -2,7 +2,7 @@
 import flask
 from flask import Flask, send_from_directory, render_template, redirect
 
-import flask.ext.login as flask_login
+import flask_login
 
 app = Flask(__name__)
 
